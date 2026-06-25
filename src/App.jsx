@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LayoutDashboard, Table, ScatterChart, BarChart2, Search, BrainCircuit, Zap, Loader2, AlertCircle } from 'lucide-react'
+import { LayoutDashboard, Table, ScatterChart, BarChart2, Search, BrainCircuit, Activity, MessageCircle, Zap, Loader2, AlertCircle } from 'lucide-react'
 import { useFlashData } from './hooks/useFlashData'
 import Dashboard from './components/Dashboard'
 import DataExplorer from './components/DataExplorer'
@@ -7,6 +7,8 @@ import PhysicsPlots from './components/PhysicsPlots'
 import SubgroupAnalysis from './components/SubgroupAnalysis'
 import QueryTool from './components/QueryTool'
 import MLResults from './components/MLResults'
+import FunctionalToxicity from './components/FunctionalToxicity'
+import AIAssistant from './components/AIAssistant'
 
 const TABS = [
   { id: 'dashboard', label: 'Overview', Icon: LayoutDashboard },
@@ -15,6 +17,8 @@ const TABS = [
   { id: 'subgroups', label: 'Subgroups', Icon: BarChart2 },
   { id: 'query', label: 'Query Builder', Icon: Search },
   { id: 'ml', label: 'ML Results', Icon: BrainCircuit },
+  { id: 'toxicity', label: 'Functional Toxicity', Icon: Activity },
+  { id: 'ai', label: 'Ask AI', Icon: MessageCircle },
 ]
 
 export default function App() {
@@ -96,6 +100,8 @@ export default function App() {
             {tab === 'subgroups' && <SubgroupAnalysis rows={rows} />}
             {tab === 'query' && <QueryTool rows={rows} />}
             {tab === 'ml' && <MLResults />}
+            {tab === 'toxicity' && <FunctionalToxicity rows={rows} />}
+            {tab === 'ai' && <AIAssistant rows={rows} />}
           </>
         )}
       </main>

@@ -59,9 +59,7 @@ export default function Dashboard({ rows }) {
       } else if (isIntra && nFx <= 1) {
         category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
       } else if (isIntra) {
-        const splitColors = { 2: '#818cf8', 3: '#6366f1', 4: '#4f46e5', 6: '#3730a3' }
-        category = 'split'; key = `${nFx} splits`; sortOrder = 1 + nFx * 0.01
-        color = splitColors[nFx] || '#6366f1'
+        category = 'split'; key = '2–6 splits (intra-session)'; sortOrder = 1; color = '#6366f1'
       } else {
         const multiColors = { 2: '#fbbf24', 3: '#f59e0b', 4: '#fb923c', 5: '#f97316', 8: '#ef4444', 10: '#dc2626' }
         category = 'multi'; key = `${nFx} fx`; sortOrder = 100 + nFx

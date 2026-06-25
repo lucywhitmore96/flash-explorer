@@ -5,7 +5,7 @@ import {
 } from 'recharts'
 import { particleColor } from '../utils/dataUtils'
 
-const PARTICLES = ['electron', 'proton', 'heavy ion', 'photon', 'other']
+const PARTICLES = ['electron', 'proton', 'heavy ion', 'photon']
 
 const PARAMS = [
   { key: 'flash_avg_dose_rate_Gy_s', label: 'Avg Dose Rate (Gy/s)', log: true, threshold: 40.8, thresholdLabel: '40.8 Gy/s' },

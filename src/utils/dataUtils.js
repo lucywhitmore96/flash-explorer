@@ -13,20 +13,29 @@ export function normaliseRow(row) {
   r.num_fractions = parseFloat(r.num_fractions) || null
   r.dose_per_fraction_Gy = parseFloat(r.dose_per_fraction_Gy) || null
 
-  const nts = parseFloat(r.target_normal_tissue_sparing_binary)
-  r.nts = isNaN(nts) ? null : nts === 1 ? true : nts === 0 ? false : null
+  const hte = String(r.healthy_tissue_effect || '').trim().toUpperCase()
+  r.nts = hte === 'YES' ? true : hte === 'NO' ? false : null
 
   const isFrac = String(r.is_fractionated || '').toLowerCase()
   r.fractionated = isFrac === 'yes' || isFrac === '1' || isFrac === '1.0' || isFrac === 'yes_intrafraction_split'
 
-  r.particle = r.particle_group || r.particle || 'unknown'
-  r.particle = r.particle.replace('_', ' ')
+  const pRaw = (r.particle_group || r.particle || 'unknown').toLowerCase().trim()
+  if (pRaw === 'heavy_ion' || pRaw === 'other') r.particle = 'heavy ion'
+  else if (pRaw === 'electron') r.particle = 'electron'
+  else if (pRaw === 'proton') r.particle = 'proton'
+  else if (pRaw === 'photon') r.particle = 'photon'
+  else r.particle = pRaw
 
   return r
 }
 
+export function isTumourArm(r) {
+  return (r.tissue_class || '').trim().toLowerCase() === 'tumor'
+}
+
 export function summarise(rows) {
-  const evaluable = rows.filter((r) => r.nts !== null)
+  const nonTumour = rows.filter((r) => !isTumourArm(r))
+  const evaluable = nonTumour.filter((r) => r.nts !== null)
   const ntsYes = evaluable.filter((r) => r.nts === true)
   const papers = new Set(rows.map((r) => r.citation_title).filter(Boolean))
 

@@ -3,7 +3,7 @@ import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from 'recharts'
-import { summarise, pct, particleColor } from '../utils/dataUtils'
+import { summarise, pct, particleColor, isTumourArm } from '../utils/dataUtils'
 
 function StatCard({ label, value, sub, color = 'text-flash-600' }) {
   return (
@@ -43,10 +43,23 @@ export default function Dashboard({ rows }) {
     .map(([y, v]) => ({ year: parseInt(y), arms: v.total, papers: v.papers.size }))
     .sort((a, b) => a.year - b.year)
 
-  const fracBar = [
-    { name: 'Single fraction', pct: parseFloat(pct(stats.byFrac.single.yes, stats.byFrac.single.total)), n: stats.byFrac.single.total },
-    { name: 'Fractionated', pct: parseFloat(pct(stats.byFrac.fractionated.yes, stats.byFrac.fractionated.total)), n: stats.byFrac.fractionated.total },
-  ]
+  const fracByN = useMemo(() => {
+    const evaluable = rows.filter((r) => !isTumourArm(r) && r.nts !== null)
+    const counts = {}
+    for (const r of evaluable) {
+      const n = r.num_fractions
+      if (!n) continue
+      const key = `${n} fx`
+      if (!counts[key]) counts[key] = { yes: 0, total: 0, nFx: n }
+      counts[key].total++
+      if (r.nts) counts[key].yes++
+    }
+    return Object.entries(counts)
+      .map(([name, v]) => ({ name, n: v.total, nFx: v.nFx, pct: parseFloat(pct(v.yes, v.total)) }))
+      .sort((a, b) => a.nFx - b.nFx)
+  }, [rows])
+
+  const FRAC_COLORS = ['#14b8a6','#2dd4bf','#6366f1','#818cf8','#a78bfa','#f59e0b','#fb923c','#f43f5e']
 
   return (
     <div className="space-y-6">
@@ -137,25 +150,31 @@ export default function Dashboard({ rows }) {
           </ResponsiveContainer>
         </div>
 
-        {/* Fractionation */}
+        {/* Fractionation by count */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">NTS Rate: Single vs Fractionated</h3>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={fracBar} margin={{ left: 0, right: 20 }}>
+          <h3 className="text-sm font-semibold text-slate-700 mb-1">NTS Rate by Number of Fractions</h3>
+          <p className="text-xs text-slate-400 mb-3">Hover bars for arm count. Small groups (n&lt;5) shown with lighter bars.</p>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={fracByN} margin={{ left: 0, right: 20, top: 5 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} />
               <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11 }} />
-              <Tooltip formatter={(v) => [`${v}%`, 'NTS rate']} />
-              <Bar dataKey="pct" fill="#14b8a6" radius={[4, 4, 0, 0]}>
-                {fracBar.map((d) => (
-                  <Cell key={d.name} fill={d.name === 'Fractionated' ? '#6366f1' : '#14b8a6'} />
+              <Tooltip formatter={(v, _, { payload }) => [`${v}% (n=${payload.n})`, 'NTS rate']} />
+              <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
+                {fracByN.map((d, i) => (
+                  <Cell key={d.name} fill={FRAC_COLORS[i % FRAC_COLORS.length]} opacity={d.n < 5 ? 0.5 : 1} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-          <p className="text-xs text-slate-400 mt-2">
-            Single: n={stats.byFrac.single.total} · Fractionated: n={stats.byFrac.fractionated.total}
-          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+            {fracByN.map((d, i) => (
+              <span key={d.name} className="flex items-center gap-1 text-xs text-slate-500">
+                <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: FRAC_COLORS[i % FRAC_COLORS.length], opacity: d.n < 5 ? 0.5 : 1 }} />
+                {d.name}: n={d.n}{d.n < 5 ? ' ⚠' : ''}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

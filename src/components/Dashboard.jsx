@@ -47,19 +47,34 @@ export default function Dashboard({ rows }) {
     const evaluable = rows.filter((r) => !isTumourArm(r) && r.nts !== null)
     const counts = {}
     for (const r of evaluable) {
-      const n = r.num_fractions
-      if (!n) continue
-      const key = `${n} fx`
-      if (!counts[key]) counts[key] = { yes: 0, total: 0, nFx: n }
+      const nFx = r.num_fractions
+      if (!nFx) continue
+      const regime = (r.fractionation_regime || '').toLowerCase()
+      const isIntra = regime.includes('intra')
+      const isMulti = regime.includes('multi')
+      // intra-session with nFx=1 → treat as single fraction (temporal split of one dose)
+      let category, key, sortOrder, color
+      if (!isIntra && !isMulti) {
+        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
+      } else if (isIntra && nFx <= 1) {
+        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
+      } else if (isIntra) {
+        const splitColors = { 2: '#818cf8', 3: '#6366f1', 4: '#4f46e5', 6: '#3730a3' }
+        category = 'split'; key = `${nFx} splits`; sortOrder = 1 + nFx * 0.01
+        color = splitColors[nFx] || '#6366f1'
+      } else {
+        const multiColors = { 2: '#fbbf24', 3: '#f59e0b', 4: '#fb923c', 5: '#f97316', 8: '#ef4444', 10: '#dc2626' }
+        category = 'multi'; key = `${nFx} fx`; sortOrder = 100 + nFx
+        color = multiColors[nFx] || '#f59e0b'
+      }
+      if (!counts[key]) counts[key] = { yes: 0, total: 0, category, sortOrder, color }
       counts[key].total++
       if (r.nts) counts[key].yes++
     }
     return Object.entries(counts)
-      .map(([name, v]) => ({ name, n: v.total, nFx: v.nFx, pct: parseFloat(pct(v.yes, v.total)) }))
-      .sort((a, b) => a.nFx - b.nFx)
+      .map(([name, v]) => ({ name, n: v.total, pct: parseFloat(pct(v.yes, v.total)), category: v.category, sortOrder: v.sortOrder, color: v.color }))
+      .sort((a, b) => a.sortOrder - b.sortOrder)
   }, [rows])
-
-  const FRAC_COLORS = ['#14b8a6','#2dd4bf','#6366f1','#818cf8','#a78bfa','#f59e0b','#fb923c','#f43f5e']
 
   return (
     <div className="space-y-6">
@@ -152,25 +167,30 @@ export default function Dashboard({ rows }) {
 
         {/* Fractionation by count */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-slate-700 mb-1">NTS Rate by Number of Fractions</h3>
-          <p className="text-xs text-slate-400 mb-3">Hover bars for arm count. Small groups (n&lt;5) shown with lighter bars.</p>
+          <h3 className="text-sm font-semibold text-slate-700 mb-1">NTS Rate by Fractionation</h3>
+          <div className="flex gap-4 mb-3 text-xs">
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block bg-teal-400" /> Single fraction</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block bg-indigo-500" /> Intra-session splits</span>
+            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm inline-block bg-amber-400" /> Multi-day fractions</span>
+            <span className="text-slate-400">· faded = n&lt;5</span>
+          </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={fracByN} margin={{ left: 0, right: 20, top: 5 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} />
               <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11 }} />
-              <Tooltip formatter={(v, _, { payload }) => [`${v}% (n=${payload.n})`, 'NTS rate']} />
+              <Tooltip formatter={(v, _, { payload }) => [`${v}% (n=${payload.n})`, `NTS rate — ${payload.category}`]} />
               <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
-                {fracByN.map((d, i) => (
-                  <Cell key={d.name} fill={FRAC_COLORS[i % FRAC_COLORS.length]} opacity={d.n < 5 ? 0.5 : 1} />
+                {fracByN.map((d) => (
+                  <Cell key={d.name} fill={d.color} opacity={d.n < 5 ? 0.45 : 1} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
-            {fracByN.map((d, i) => (
+            {fracByN.map((d) => (
               <span key={d.name} className="flex items-center gap-1 text-xs text-slate-500">
-                <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: FRAC_COLORS[i % FRAC_COLORS.length], opacity: d.n < 5 ? 0.5 : 1 }} />
+                <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: d.color, opacity: d.n < 5 ? 0.45 : 1 }} />
                 {d.name}: n={d.n}{d.n < 5 ? ' ⚠' : ''}
               </span>
             ))}

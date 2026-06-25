@@ -15,9 +15,9 @@ const TABS = [
   { id: 'explorer', label: 'Data Explorer', Icon: Table },
   { id: 'physics', label: 'Physics Plots', Icon: ScatterChart },
   { id: 'subgroups', label: 'Subgroups', Icon: BarChart2 },
-  { id: 'query', label: 'Query Builder', Icon: Search },
   { id: 'ml', label: 'ML Results', Icon: BrainCircuit },
   { id: 'toxicity', label: 'Functional Toxicity', Icon: Activity },
+  { id: 'query', label: 'Query Builder', Icon: Search },
   { id: 'ai', label: 'Ask AI', Icon: MessageCircle },
 ]
 

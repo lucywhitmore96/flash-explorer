@@ -20,6 +20,7 @@ function makeBarData(rows, keyFn, minN = 3) {
       name,
       pct: parseFloat(pct(v.yes, v.total)),
       n: v.total,
+      label: `${pct(v.yes, v.total)}% (n=${v.total})`,
     }))
     .sort((a, b) => b.pct - a.pct)
 }
@@ -27,22 +28,22 @@ function makeBarData(rows, keyFn, minN = 3) {
 function SubgroupBar({ data, title, colorFn }) {
   return (
     <div className="card">
-      <h3 className="text-sm font-semibold text-slate-700 mb-4">{title}</h3>
-      <ResponsiveContainer width="100%" height={Math.max(200, data.length * 38)}>
-        <BarChart data={data} layout="vertical" margin={{ left: 10, right: 60, top: 5, bottom: 5 }}>
+      <h3 className="text-sm font-semibold text-slate-700 mb-1">{title}</h3>
+      <p className="text-xs text-slate-400 mb-3">n shown on each bar · faded = n &lt; 5</p>
+      <ResponsiveContainer width="100%" height={Math.max(200, data.length * 42)}>
+        <BarChart data={data} layout="vertical" margin={{ left: 10, right: 70, top: 5, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 10 }} />
           <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={140} />
           <Tooltip formatter={(v, _, { payload }) => [`${v}% (n=${payload.n})`, 'FLASH NTS rate']} />
           <Bar dataKey="pct" radius={[0, 4, 4, 0]}>
             <LabelList
-              dataKey="pct"
+              dataKey="label"
               position="right"
-              formatter={(v) => `${v}%`}
               style={{ fontSize: 10, fill: '#64748b' }}
             />
             {data.map((d, i) => (
-              <Cell key={i} fill={colorFn ? colorFn(d, i) : '#14b8a6'} />
+              <Cell key={i} fill={colorFn ? colorFn(d, i) : '#14b8a6'} opacity={d.n < 5 ? 0.4 : 1} />
             ))}
           </Bar>
         </BarChart>

@@ -2,7 +2,7 @@
 
 Interactive browser-based database explorer for the **in-vivo FLASH radiotherapy living literature review**.
 
-🔗 **Live app:** https://YOUR-USERNAME.github.io/flash-explorer/
+🔗 **Live app:** https://lucywhitmore96.github.io/flash-explorer/
 
 ## Features
 

@@ -51,32 +51,31 @@ ${byParticle}
 ${byTissueStr}
 
 ## FRACTIONATION
-- Single fraction: 71.6% NTS (n=306)
-- Fractionated: 51.5% NTS (n=33) — χ²=4.76, p=0.029
+- Single fraction: 71.3% NTS (n=293)
+- Multi-day fractionated: 46.7% NTS (n=30) — χ²=6.634, p=0.010
 
 ## ML ANALYSIS RESULTS (Random Forest, 5-fold CV, n=349)
-- Dosimetric features (dose, dose rate): Balanced Accuracy = 0.685 ± 0.017
-- Temporal/pulse features (DPP, PRF, pulse width, fractions): BA = 0.683 ± 0.021
-- Model/tissue features (species, tissue class): BA = 0.527 ± 0.014 (near chance)
-- Experimental conditions (anaesthesia, oxygen): BA = 0.542 ± 0.021 (near chance)
-- Combined: BA = 0.668 ± 0.022
-- KEY FINDING: Physics features dominate; biology near chance — FLASH effect is primarily physics-driven.
+- Dosimetric features (dose, dose rate): Balanced Accuracy = 0.689 ± 0.031
+- Temporal/pulse features (DPP, PRF, pulse width, fractions): BA = 0.685 ± 0.034
+- Model/tissue features (species, tissue class): BA = 0.543 ± 0.023 (near chance)
+- Experimental conditions (anaesthesia, oxygen): BA = 0.618 ± 0.033
+- Combined: BA = 0.669 ± 0.030
+- KEY FINDING: Physics features dominate; biological features are weaker — FLASH effect is primarily physics-driven.
 
 ## KEY THRESHOLDS
-- Average dose rate: ≥40.8 Gy/s threshold identified; 26.3% non-sparing even above threshold
-- Dose per pulse (non-proton): ≥3.7 Gy (Balanced Accuracy = 0.612)
-- Dose per pulse (electron only): ≥1.0 Gy (BA = 0.620)
+- Average dose rate: ≥40.8 Gy/s threshold identified; 27.3% non-sparing even above threshold
+- Dose per pulse (electron only): ≥1.0 Gy (BA = 0.624)
 
 ## DMF (Dose Modifying Factor)
-- n=99 arms with calculable DMF; mean DMF = 1.24 ± 0.20
+- n=97 arms with calculable DMF; mean DMF = 1.25 ± 0.21
 
-## OXYGEN CONDITION (single fraction subset, n=304)
-- Normoxia: 73.1% NTS (n=175) — reference
-- Hyperoxic (>90% O₂): 30.0% NTS (n=10) — p=0.007, significantly lower
-- Hypoxic/anoxic: 60.0% NTS (n=5) — underpowered
+## OXYGEN CONDITION (single fraction subset, n=285)
+- Normoxia: 74.1% NTS (n=185) — reference
+- Hyperoxic (>90% O₂): 22.2% NTS (n=9) — p=0.0024, significantly lower
+- Hypoxic/anoxic: 50.0% NTS (n=8) — underpowered
 
-## ANAESTHESIA (single fraction, n=297)
-- Isoflurane: 78.1% (n=114) vs Ketamine: 77.5% (n=40) — p=1.0, NO EFFECT
+## ANAESTHESIA (single fraction, n=278)
+- Isoflurane: 78.7% (n=108) vs Ketamine/xylazine: 76.3% (n=38) — p=0.938, NO EFFECT
 
 Answer questions concisely and scientifically. Cite specific numbers from the database. If asked about something not in the database, say so clearly. Use markdown formatting.`
 }

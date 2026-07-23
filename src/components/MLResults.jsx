@@ -7,13 +7,13 @@ import {
 const FEATURE_GROUPS = [
   { name: 'Dosimetric', ba: 0.689, se: 0.031, color: '#14b8a6',
     features: 'Total dose, avg dose rate (raw + log), peak dose rate, dose per fraction' },
-  { name: 'Temporal', ba: 0.678, se: 0.036, color: '#6366f1',
+  { name: 'Temporal', ba: 0.685, se: 0.034, color: '#6366f1',
     features: 'Dose per pulse (raw + log), PRF, pulse width, irradiation time, pulse count, proton spot rate, spot count, fractions, inter-fraction interval' },
   { name: 'Model / tissue', ba: 0.543, se: 0.023, color: '#94a3b8',
     features: 'Species, tissue class, site group, model type (one-hot encoded)' },
-  { name: 'Exp. conditions', ba: 0.629, se: 0.032, color: '#f59e0b',
+  { name: 'Exp. conditions', ba: 0.618, se: 0.033, color: '#f59e0b',
     features: 'Anaesthesia class, oxygen condition (one-hot encoded)' },
-  { name: 'Combined', ba: 0.668, se: 0.034, color: '#1e40af',
+  { name: 'Combined', ba: 0.669, se: 0.030, color: '#1e40af',
     features: 'All features above combined' },
 ]
 
@@ -97,9 +97,9 @@ export default function MLResults() {
       <div className="card bg-indigo-50 border-indigo-200">
         <p className="text-xs font-semibold text-indigo-800 mb-1">Key finding</p>
         <p className="text-sm text-indigo-700">
-          Physics features — both dosimetric (BA 0.685) and temporal/pulse-structure (BA 0.683) — are the dominant
-          predictors of FLASH normal-tissue sparing. Biological features (model/tissue, experimental conditions)
-          perform near chance (BA ≈ 0.53), suggesting the FLASH effect is primarily physics-driven.
+          Physics features — both dosimetric (BA 0.689) and temporal/pulse-structure (BA 0.685) — are the dominant
+          predictors of FLASH normal-tissue sparing. Biological features (model/tissue and experimental conditions)
+          perform less well (BA ≈ 0.54 and 0.62, respectively), suggesting the FLASH effect is primarily physics-driven.
         </p>
       </div>
 
@@ -142,7 +142,7 @@ export default function MLResults() {
         {/* Fractionation — all particles */}
         <div className="card">
           <h3 className="text-sm font-semibold text-slate-700 mb-1">NTS by Fractionation — All Particles</h3>
-          <p className="text-xs text-slate-400 mb-4">χ² = 4.76, p = 0.029</p>
+          <p className="text-xs text-slate-400 mb-4">χ² = 6.634, p = 0.010</p>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={FRAC_DATA} margin={{ left: 0, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -159,7 +159,7 @@ export default function MLResults() {
         {/* Fractionation — electron only */}
         <div className="card">
           <h3 className="text-sm font-semibold text-slate-700 mb-1">NTS by Fractionation — Electron Only</h3>
-          <p className="text-xs text-slate-400 mb-4">χ² = 6.31, p = 0.012</p>
+          <p className="text-xs text-slate-400 mb-4">χ² = 8.945, p = 0.0028</p>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={FRAC_ELECTRON} margin={{ left: 0, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />

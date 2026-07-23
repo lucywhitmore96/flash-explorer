@@ -56,10 +56,10 @@ ${byTissueStr}
 
 ## ML ANALYSIS RESULTS (Random Forest, 5-fold CV, n=349)
 - Dosimetric features (dose, dose rate): Balanced Accuracy = 0.689 ± 0.031
-- Temporal/pulse features (DPP, PRF, pulse width, fractions): BA = 0.685 ± 0.034
+- Temporal/pulse features (DPP, PRF, pulse width, fractions): BA = 0.673 ± 0.036
 - Model/tissue features (species, tissue class): BA = 0.543 ± 0.023 (near chance)
 - Experimental conditions (anaesthesia, oxygen): BA = 0.618 ± 0.033
-- Combined: BA = 0.669 ± 0.030
+- Combined: BA = 0.666 ± 0.029
 - KEY FINDING: Physics features dominate; biological features are weaker — FLASH effect is primarily physics-driven.
 
 ## KEY THRESHOLDS
@@ -69,12 +69,12 @@ ${byTissueStr}
 ## DMF (Dose Modifying Factor)
 - n=97 arms with calculable DMF; mean DMF = 1.25 ± 0.21
 
-## OXYGEN CONDITION (single fraction subset, n=285)
-- Normoxia: 74.1% NTS (n=185) — reference
-- Hyperoxic (>90% O₂): 22.2% NTS (n=9) — p=0.0024, significantly lower
+## OXYGEN CONDITION (single fraction subset, n=287)
+- Normoxia: 73.8% NTS (n=187) — reference
+- Hyperoxic (>90% O₂): 22.2% NTS (n=9) — p=0.0025, significantly lower
 - Hypoxic/anoxic: 50.0% NTS (n=8) — underpowered
 
-## ANAESTHESIA (single fraction, n=278)
+## ANAESTHESIA (single fraction, n=280)
 - Isoflurane: 78.7% (n=108) vs Ketamine/xylazine: 76.3% (n=38) — p=0.938, NO EFFECT
 
 Answer questions concisely and scientifically. Cite specific numbers from the database. If asked about something not in the database, say so clearly. Use markdown formatting.`

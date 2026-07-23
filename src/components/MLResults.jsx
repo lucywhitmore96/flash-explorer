@@ -7,13 +7,13 @@ import {
 const FEATURE_GROUPS = [
   { name: 'Dosimetric', ba: 0.689, se: 0.031, color: '#14b8a6',
     features: 'Total dose, avg dose rate (raw + log), peak dose rate, dose per fraction' },
-  { name: 'Temporal', ba: 0.685, se: 0.034, color: '#6366f1',
+  { name: 'Temporal', ba: 0.673, se: 0.036, color: '#6366f1',
     features: 'Dose per pulse (raw + log), PRF, pulse width, irradiation time, pulse count, proton spot rate, spot count, fractions, inter-fraction interval' },
   { name: 'Model / tissue', ba: 0.543, se: 0.023, color: '#94a3b8',
     features: 'Species, tissue class, site group, model type (one-hot encoded)' },
   { name: 'Exp. conditions', ba: 0.618, se: 0.033, color: '#f59e0b',
     features: 'Anaesthesia class, oxygen condition (one-hot encoded)' },
-  { name: 'Combined', ba: 0.669, se: 0.030, color: '#1e40af',
+  { name: 'Combined', ba: 0.666, se: 0.029, color: '#1e40af',
     features: 'All features above combined' },
 ]
 
@@ -97,7 +97,7 @@ export default function MLResults() {
       <div className="card bg-indigo-50 border-indigo-200">
         <p className="text-xs font-semibold text-indigo-800 mb-1">Key finding</p>
         <p className="text-sm text-indigo-700">
-          Physics features — both dosimetric (BA 0.689) and temporal/pulse-structure (BA 0.685) — are the dominant
+          Physics features — both dosimetric (BA 0.689) and temporal/pulse-structure (BA 0.673) — are the dominant
           predictors of FLASH normal-tissue sparing. Biological features (model/tissue and experimental conditions)
           perform less well (BA ≈ 0.54 and 0.62, respectively), suggesting the FLASH effect is primarily physics-driven.
         </p>

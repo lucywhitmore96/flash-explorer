@@ -26,6 +26,8 @@ export function normaliseRow(row) {
   else if (pRaw === 'photon') r.particle = 'photon'
   else r.particle = pRaw
 
+  r.oxygen_condition = r.oxy_group || r.oxygen_condition || 'Not reported'
+
   return r
 }
 

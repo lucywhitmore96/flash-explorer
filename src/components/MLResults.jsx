@@ -5,32 +5,31 @@ import {
 } from 'recharts'
 
 const FEATURE_GROUPS = [
-  { name: 'Dosimetric', ba: 0.685, se: 0.017, color: '#14b8a6',
+  { name: 'Dosimetric', ba: 0.689, se: 0.031, color: '#14b8a6',
     features: 'Total dose, avg dose rate (raw + log), peak dose rate, dose per fraction' },
-  { name: 'Temporal', ba: 0.683, se: 0.021, color: '#6366f1',
+  { name: 'Temporal', ba: 0.678, se: 0.036, color: '#6366f1',
     features: 'Dose per pulse (raw + log), PRF, pulse width, irradiation time, pulse count, proton spot rate, spot count, fractions, inter-fraction interval' },
-  { name: 'Model / tissue', ba: 0.527, se: 0.014, color: '#94a3b8',
+  { name: 'Model / tissue', ba: 0.543, se: 0.023, color: '#94a3b8',
     features: 'Species, tissue class, site group, model type (one-hot encoded)' },
-  { name: 'Exp. conditions', ba: 0.542, se: 0.021, color: '#f59e0b',
+  { name: 'Exp. conditions', ba: 0.629, se: 0.032, color: '#f59e0b',
     features: 'Anaesthesia class, oxygen condition (one-hot encoded)' },
-  { name: 'Combined', ba: 0.668, se: 0.022, color: '#1e40af',
+  { name: 'Combined', ba: 0.668, se: 0.034, color: '#1e40af',
     features: 'All features above combined' },
 ]
 
 const THRESHOLDS = [
-  { label: 'Avg Dose Rate threshold', value: '≥ 40.8 Gy/s', detail: '26.3% non-sparing above threshold', color: '#14b8a6' },
-  { label: 'Dose per Pulse threshold (non-proton)', value: '≥ 3.7 Gy', detail: 'Balanced accuracy = 0.612', color: '#6366f1' },
-  { label: 'Dose per Pulse threshold (electron only)', value: '≥ 1.0 Gy', detail: 'Balanced accuracy = 0.620', color: '#a78bfa' },
+  { label: 'Avg Dose Rate threshold', value: '≥ 40.8 Gy/s', detail: '27.3% non-sparing above threshold', color: '#14b8a6' },
+  { label: 'Dose per Pulse threshold (electron only)', value: '≥ 1.0 Gy', detail: 'Balanced accuracy = 0.624', color: '#6366f1' },
 ]
 
 const FRAC_DATA = [
-  { name: 'Single fraction', pct: 71.6, n: 306, color: '#14b8a6' },
-  { name: 'Fractionated', pct: 51.5, n: 33, color: '#6366f1' },
+  { name: 'Single fraction', pct: 71.3, n: 293, color: '#14b8a6' },
+  { name: 'Fractionated', pct: 46.7, n: 30, color: '#6366f1' },
 ]
 
 const FRAC_ELECTRON = [
-  { name: 'Single fraction', pct: 71.9, n: 203, color: '#14b8a6' },
-  { name: 'Fractionated', pct: 46.4, n: 28, color: '#6366f1' },
+  { name: 'Single fraction', pct: 71.9, n: 192, color: '#14b8a6' },
+  { name: 'Fractionated', pct: 40.0, n: 25, color: '#6366f1' },
 ]
 
 function FeatureGroupBar() {
@@ -130,11 +129,11 @@ export default function MLResults() {
           <div className="flex flex-col gap-3">
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-100">
               <p className="text-xs text-slate-500">Arms with calculable DMF (non-tumour)</p>
-              <p className="text-2xl font-bold text-flash-700">n = 99</p>
+              <p className="text-2xl font-bold text-flash-700">n = 97</p>
             </div>
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-100">
               <p className="text-xs text-slate-500">Mean DMF</p>
-              <p className="text-2xl font-bold text-flash-700">1.24 <span className="text-sm font-normal text-slate-400">± 0.20</span></p>
+              <p className="text-2xl font-bold text-flash-700">1.24 <span className="text-sm font-normal text-slate-400">± 0.21</span></p>
               <p className="text-xs text-slate-400">FLASH dose required to produce same effect as conventional dose</p>
             </div>
           </div>
@@ -180,8 +179,9 @@ export default function MLResults() {
         <p className="text-xs text-slate-500 leading-relaxed">
           Random forest classifier (scikit-learn). 5-fold cross-validation stratified by NTS outcome.
           Balanced accuracy accounts for class imbalance (YES : NO ≈ 70 : 30).
-          Feature importance derived by permutation. Thresholds derived by Youden's J / balanced accuracy optimisation
-          over a grid search. Full methods in the associated manuscript.
+          Feature importance derived by permutation. Thresholds derived by balanced-accuracy-maximising sweep.
+          DPP threshold is electron-only (pulsed linac arms); proton PBS spot dose and quasi-continuous X-ray arms excluded.
+          Full methods in the associated manuscript.
         </p>
       </div>
     </div>

@@ -9,7 +9,7 @@ const PARTICLES = ['electron', 'proton', 'heavy ion', 'photon']
 
 const PARAMS = [
   { key: 'flash_avg_dose_rate_Gy_s', label: 'Avg Dose Rate (Gy/s)', log: true, threshold: 40.8, thresholdLabel: '40.8 Gy/s' },
-  { key: 'flash_dose_per_pulse_Gy', label: 'Dose per Pulse (Gy)', log: true, threshold: 3.7, thresholdLabel: '3.7 Gy (non-proton)' },
+  { key: 'flash_dose_per_pulse_Gy', label: 'Dose per Pulse (Gy)', log: true, threshold: 1.0, thresholdLabel: '1.0 Gy (electron only)' },
   { key: 'total_dose_Gy', label: 'Total Dose (Gy)', log: false },
   { key: 'flash_inst_dose_rate_Gy_s', label: 'Peak Dose Rate (Gy/s)', log: true },
   { key: 'flash_prf_Hz', label: 'Pulse Rep. Freq. (Hz)', log: false },
@@ -88,7 +88,7 @@ export default function PhysicsPlots({ rows }) {
         <h2 className="text-xl font-bold text-slate-800 mb-1">Physics Parameter Explorer</h2>
         <p className="text-sm text-slate-500">
           Scatter plot of any two physics parameters. Points coloured by FLASH NTS outcome.
-          Threshold lines are derived from the paper (DR ≥ 40.8 Gy/s; DPP ≥ 3.7 Gy for non-proton).
+          Threshold lines are derived from the paper (DR ≥ 40.8 Gy/s; DPP ≥ 1.0 Gy, electron only).
         </p>
       </div>
 

@@ -129,11 +129,11 @@ export default function MLResults() {
           <div className="flex flex-col gap-3">
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-100">
               <p className="text-xs text-slate-500">Arms with calculable DMF (non-tumour)</p>
-              <p className="text-2xl font-bold text-flash-700">n = 97</p>
+              <p className="text-2xl font-bold text-flash-700">n = 84</p>
             </div>
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-100">
               <p className="text-xs text-slate-500">Mean DMF</p>
-              <p className="text-2xl font-bold text-flash-700">1.24 <span className="text-sm font-normal text-slate-400">± 0.21</span></p>
+              <p className="text-2xl font-bold text-flash-700">1.28 <span className="text-sm font-normal text-slate-400">± 0.21</span></p>
               <p className="text-xs text-slate-400">FLASH dose required to produce same effect as conventional dose</p>
             </div>
           </div>

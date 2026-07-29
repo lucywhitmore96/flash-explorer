@@ -67,7 +67,7 @@ ${byTissueStr}
 - Dose per pulse (electron only): ≥1.0 Gy (BA = 0.624)
 
 ## DMF (Dose Modifying Factor)
-- n=97 arms with calculable DMF; mean DMF = 1.25 ± 0.21
+- n=84 single-fraction arms with calculable DMF; mean DMF = 1.28 ± 0.21
 
 ## OXYGEN CONDITION (single fraction subset, n=287)
 - Normoxia: 73.8% NTS (n=187) — reference

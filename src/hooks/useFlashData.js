@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Papa from 'papaparse'
 import { normaliseRow } from '../utils/dataUtils'
 
-const CSV_URL = import.meta.env.BASE_URL + 'lit_review_structured_v86.csv'
+const CSV_URL = import.meta.env.BASE_URL + 'data/ml-final-2026-09-11/literature.csv'
 
 export function useFlashData() {
   const [rows, setRows] = useState([])

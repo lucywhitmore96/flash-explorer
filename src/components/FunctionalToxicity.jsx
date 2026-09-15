@@ -85,7 +85,7 @@ export default function FunctionalToxicity({ rows }) {
         <h2 className="text-xl font-bold text-slate-800 mb-1">Functional Toxicity</h2>
         <p className="text-sm text-slate-500">
           Functional outcome scores comparing FLASH vs conventional irradiation in non-tumour arms.
-          Severity is rated on a 0–6 scale; benefit magnitude 0–3.
+          Severity is rated on a 0–5 scale; benefit magnitude 0–3.
         </p>
       </div>
 
@@ -120,7 +120,7 @@ export default function FunctionalToxicity({ rows }) {
         <div className="card">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Functional Delta Score Distribution</h3>
           <p className="text-xs text-slate-400 mb-3">
-            Delta = FLASH toxicity − conventional toxicity (normalised direction: positive = FLASH better)
+            Delta = Conventional toxicity − FLASH toxicity (positive = FLASH better)
           </p>
           <div className="flex items-center gap-4">
             <ResponsiveContainer width="55%" height={200}>
@@ -181,9 +181,9 @@ export default function FunctionalToxicity({ rows }) {
           <ResponsiveContainer width="100%" height={260}>
             <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="conv" name="Conv severity" domain={[0, 6]}
+              <XAxis type="number" dataKey="conv" name="Conv severity" domain={[0, 5]}
                 label={{ value: 'Conventional severity', position: 'insideBottom', offset: -10, fontSize: 10 }} tick={{ fontSize: 9 }} />
-              <YAxis type="number" dataKey="flash" name="FLASH severity" domain={[0, 6]}
+              <YAxis type="number" dataKey="flash" name="FLASH severity" domain={[0, 5]}
                 label={{ value: 'FLASH severity', angle: -90, position: 'insideLeft', offset: 10, fontSize: 10 }} tick={{ fontSize: 9 }} />
               <Tooltip cursor={{ strokeDasharray: '3 3' }}
                 content={({ active, payload }) => {

@@ -1,3 +1,4 @@
+import mlFinal from '../data/mlFinal.json'
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { Send, Bot, User, Key, ExternalLink, Loader2, Trash2, AlertCircle } from 'lucide-react'
 import { summarise, pct, isTumourArm, groupTissue } from '../utils/dataUtils'
@@ -50,32 +51,10 @@ ${byParticle}
 ## NTS RATE BY TISSUE GROUP
 ${byTissueStr}
 
-## FRACTIONATION
-- Single fraction: 71.3% NTS (n=293)
-- Multi-day fractionated: 46.7% NTS (n=30) — χ²=6.634, p=0.010
-
-## ML ANALYSIS RESULTS (Random Forest, 5-fold CV, n=349)
-- Dosimetric features (dose, dose rate): Balanced Accuracy = 0.689 ± 0.031
-- Temporal/pulse features (DPP, PRF, pulse width, fractions): BA = 0.673 ± 0.036
-- Model/tissue features (species, tissue class): BA = 0.543 ± 0.023 (near chance)
-- Experimental conditions (anaesthesia, oxygen): BA = 0.618 ± 0.033
-- Combined: BA = 0.666 ± 0.029
-- KEY FINDING: Physics features dominate; biological features are weaker — FLASH effect is primarily physics-driven.
-
-## KEY THRESHOLDS
-- Average dose rate: ≥40.8 Gy/s threshold identified; 27.3% non-sparing even above threshold
-- Dose per pulse (electron only): ≥1.0 Gy (BA = 0.624)
-
-## DMF (Dose Modifying Factor)
-- n=84 single-fraction arms with calculable DMF; mean DMF = 1.28 ± 0.21
-
-## OXYGEN CONDITION (single fraction subset, n=287)
-- Normoxia: 73.8% NTS (n=187) — reference
-- Hyperoxic (>90% O₂): 22.2% NTS (n=9) — p=0.0025, significantly lower
-- Hypoxic/anoxic: 50.0% NTS (n=8) — underpowered
-
-## ANAESTHESIA (single fraction, n=280)
-- Isoflurane: 78.7% (n=108) vs Ketamine/xylazine: 76.3% (n=38) — p=0.938, NO EFFECT
+## SOURCE ANALYSIS TABLES
+Source: ${mlFinal.version}. Each table has its own cohort; do not conflate the cleaned ML input with the primary evaluable cohort.
+${JSON.stringify(Object.fromEntries(Object.entries(mlFinal).filter(([key]) => key !== 'sources')))}
+LOPO means leave-one-publication-out validation. Arm-level cross-validation can share publications across folds. Apparent thresholds are descriptive optima, not clinical cutoffs. DMF counts refer to entries in the supplied summary, not necessarily unique arms.
 
 Answer questions concisely and scientifically. Cite specific numbers from the database. If asked about something not in the database, say so clearly. Use markdown formatting.`
 }

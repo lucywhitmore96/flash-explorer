@@ -1,0 +1,11 @@
+anesthesia_class_simple,count,NTS_yes,NTS_rate
+isoflurane,117,87.0,0.7435897435897436
+ketamine,34,25.0,0.7352941176470589
+none,34,27.0,0.7941176470588235
+injectable_dissociative_plus_alpha2_agonist,27,14.0,0.5185185185185185
+not_reported_for_irradiation,10,4.0,0.4
+injectable_tribromoethanol,9,5.0,0.5555555555555556
+injectable_barbiturate,6,3.0,0.5
+general,5,3.0,0.6
+injectable_combination,4,2.0,0.5
+other_or_unspecified,2,2.0,1.0

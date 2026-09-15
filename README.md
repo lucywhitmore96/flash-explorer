@@ -9,14 +9,14 @@ Interactive browser-based database explorer for the **in-vivo FLASH radiotherapy
 | Tab | Description |
 |-----|-------------|
 | **Overview** | Summary stats — total arms, publications, NTS rate, particle breakdown, publications over time |
-| **Data Explorer** | Full searchable/filterable table of all 481 experimental arms |
+| **Data Explorer** | Full searchable/filterable table of all 471 experimental arms |
 | **Physics Plots** | Interactive scatter plot of any two physics parameters (dose rate, DPP, dose, PRF, …), coloured by NTS outcome, with threshold reference lines |
 | **Subgroups** | FLASH NTS rate broken down by particle, tissue group, species, fractionation, and oxygen condition |
 | **Query Builder** | Build a custom subgroup query by combining any filters; shows NTS rate + 95% Wilson CI + matching paper list |
 
 ## Dataset
 
-The database (`public/lit_review_structured_v85.csv`) was compiled as part of:
+The database (`public/data/ml-final-2026-09-11/literature.csv`) was compiled as part of:
 
 > Whitmore et al. (2026) — *Machine learning analysis of in-vivo FLASH radiotherapy: predictors of normal-tissue sparing* (manuscript in preparation)
 
@@ -49,7 +49,7 @@ Or enable the included GitHub Actions workflow (`.github/workflows/deploy.yml`) 
 
 ## Updating the dataset
 
-Replace `public/lit_review_structured_v85.csv` with the new version and update the filename in `src/hooks/useFlashData.js`.
+Replace `public/data/ml-final-2026-09-11/literature.csv` with the new version and update the filename in `src/hooks/useFlashData.js`.
 
 ## Tech stack
 
@@ -59,3 +59,7 @@ Replace `public/lit_review_structured_v85.csv` with the new version and update t
 - [PapaParse](https://www.papaparse.com/) (CSV parsing)
 - [Lucide React](https://lucide.dev/) (icons)
 - Deployed via [gh-pages](https://github.com/tschaub/gh-pages)
+
+## September 2026 update
+
+See [UPDATE_REVIEW.md](UPDATE_REVIEW.md) for source versions, validation, review and rollback instructions. The cleaned ML input is provided separately from the full literature dataset.

@@ -36,7 +36,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-lg font-bold text-slate-900 leading-tight">FLASH RT Explorer</h1>
-              <p className="text-xs text-slate-500">In-Vivo Literature Database · Living Review</p>
+              <p className="text-xs text-slate-500">In-Vivo Literature Database · Updated 11 September 2026</p>
             </div>
             <div className="ml-auto text-right hidden sm:block">
               {!loading && !error && (
@@ -45,7 +45,7 @@ export default function App() {
                 </p>
               )}
               <a
-                href="https://github.com"
+                href="https://github.com/lucywhitmore96/flash-explorer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-flash-600 hover:text-flash-700 font-medium"

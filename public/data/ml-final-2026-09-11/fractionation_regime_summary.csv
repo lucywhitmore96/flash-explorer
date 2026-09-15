@@ -1,0 +1,4 @@
+comparison,n,NTS_yes,NTS_rate
+single_fraction,286,199,0.6958041958041958
+multi_day_fractionated,30,14,0.4666666666666667
+intra_session_split,10,8,0.8

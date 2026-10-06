@@ -3,7 +3,7 @@ import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from 'recharts'
-import { summarise, pct, particleColor, isTumourArm } from '../utils/dataUtils'
+import { summarise, pct, particleColor, isTumourArm, fractionationGroups } from '../utils/dataUtils'
 
 function StatCard({ label, value, sub, color = 'text-flash-600' }) {
   return (
@@ -43,36 +43,7 @@ export default function Dashboard({ rows }) {
     .map(([y, v]) => ({ year: parseInt(y), arms: v.total, papers: v.papers.size }))
     .sort((a, b) => a.year - b.year)
 
-  const fracByN = useMemo(() => {
-    const evaluable = rows.filter((r) => !isTumourArm(r) && r.nts !== null)
-    const counts = {}
-    for (const r of evaluable) {
-      const nFx = r.num_fractions
-      if (!nFx) continue
-      const regime = (r.fractionation_regime || '').toLowerCase()
-      const isIntra = regime.includes('intra')
-      const isMulti = regime.includes('multi')
-      // intra-session with nFx=1 → treat as single fraction (temporal split of one dose)
-      let category, key, sortOrder, color
-      if (!isIntra && !isMulti) {
-        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
-      } else if (isIntra && nFx <= 1) {
-        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
-      } else if (isIntra) {
-        category = 'split'; key = '2–6 splits (intra-session)'; sortOrder = 1; color = '#6366f1'
-      } else {
-        const multiColors = { 2: '#fbbf24', 3: '#f59e0b', 4: '#fb923c', 5: '#f97316', 8: '#ef4444', 10: '#dc2626' }
-        category = 'multi'; key = `${nFx} fx`; sortOrder = 100 + nFx
-        color = multiColors[nFx] || '#f59e0b'
-      }
-      if (!counts[key]) counts[key] = { yes: 0, total: 0, category, sortOrder, color }
-      counts[key].total++
-      if (r.nts) counts[key].yes++
-    }
-    return Object.entries(counts)
-      .map(([name, v]) => ({ name, n: v.total, pct: parseFloat(pct(v.yes, v.total)), category: v.category, sortOrder: v.sortOrder, color: v.color }))
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-  }, [rows])
+  const fracByN = useMemo(() => fractionationGroups(rows), [rows])
 
   return (
     <div className="space-y-6">

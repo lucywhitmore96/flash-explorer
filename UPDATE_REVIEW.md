@@ -1,70 +1,65 @@
-# September 2026 data update
+# Reviewed 80-publication dataset update
 
-Prepared on branch `update/ml-final-2026-09-15` in this separate working copy.
+Prepared in the separate working copy at
+`/Users/lucywhitmore/Downloads/FLASH_ML_1fx_paper/flash-explorer-update`.
 Original project: `/Users/lucywhitmore/CascadeProjects/flash-explorer`.
-Baseline: `1a1c03b`, also tagged `backup/pre-ml-final-2026-09-15` in this copy.
-The user reviewed the local preview and authorized a local commit. No push or deployment has been performed.
+Pre-update baseline: `1a1c03b`, also tagged `backup/pre-ml-final-2026-09-15` locally.
 
-## Sources and choices
+## Source and scope
 
-Source directory: `/Users/lucywhitmore/Downloads/ML_FINAL/FINAL_FINAL`.
-The September 11 HUNTER_RESOLVED toxicity workbook's Data sheet supplies all
-471 literature arms, including the revised 0–5 toxicity scores. It contains
-326 evaluable non-tumour YES/NO arms, of which 221 are YES.
-The cleaned workbook's ML_Input sheet is exported separately (338 rows).
-It is not joined onto the literature by title/sub-experiment: those keys are
-not unique. All source workbook cells remain unchanged.
+The user requested the latest reviewed dataset with **80 publications**, excluding
+the later 81-publication draft. Source: `/Users/lucywhitmore/Downloads/ML_FINAL/FINAL_FINAL`.
 
-The ML tab uses the eight named FINAL_FINAL analysis CSVs recorded in
-`src/data/mlFinal.json`, including SHA-256 hashes of all inputs. It replaces
-outdated hard-coded model scores, thresholds, DMF and fractionation results.
-The separate ML_FINAL/NESTED_ML output has different cohort sizes and is not
-combined with this run. No models were retrained.
-The AI context uses the same source tables. Physics plot reference lines
-use the apparent 47.62 Gy/s and 1 Gy/pulse electron thresholds.
+- `FLASH_toxicity_0to5_FINAL_ADJUDICATED_HUNTER_RESOLVED_2026-09-11.xlsx`, `Data`: **466 populated literature arms across 80 normalized titles**.
+- `lit_review_structured_v86_ML_cleaned_HUNTER_RESOLVED_2026-09-11.xlsx`, `ML_Input`: **331 populated rows**, exported separately.
+- Primary evaluable cohort: **326 non-tumour YES/NO arms from 66 titles; 221 YES and 105 NO**.
 
-Toxicity delta is conventional minus FLASH. Severity axes now run from 0 to 5.
-ML results are presented as source tables, with explicit validation labels,
-rather than retaining the old feature-group charts for incompatible results.
+These workbooks are byte-identical to the September 30 WORKING baseline copies.
+The September 30 NEW_VERSION workbooks add five Paillas comparisons from an
+81st study under review; they are intentionally excluded from this release.
 
-## Validation
+The previous September export counted five entirely empty literature rows and
+seven empty ML rows, giving misleading totals of 471 and 338. The importer now
+excludes empty formatted rows and rejects populated rows without a citation title.
+The browser ignores empty CSV records and normalizes title whitespace before
+counting or grouping publications. No populated source records are removed.
 
-- Production Vite build passed (bundle-size advisory remains).
-- Actual PapaParse loader and summary functions: 471 total / 326 evaluable / 221 YES.
-- All eight JSON analysis tables equal the imported source CSVs.
-- Numeric paired toxicity scores stay within 0–5 and delta equals CONV minus FLASH.
-- `git diff --check` passed.
-- User reviewed the local browser preview and approved the update.
+## Analysis provenance
 
-## Review and commit
+Eight source analysis CSVs supply the ML/results tables, with SHA-256 hashes in
+`src/data/mlFinal.json`. Workbooks and source results are unchanged. The cleaned
+ML subset is not joined onto the literature by non-unique title/sub-experiment keys.
+No models were retrained. Results retain the cohort and validation labels in the
+source files; they are not relabeled as the separate nested-ML analysis.
 
-From this directory:
+Toxicity severity uses 0–5 and delta is conventional minus FLASH. Physics
+reference lines use the source apparent thresholds (47.62 Gy/s across modalities and
+1 Gy/pulse for electrons). AI context uses the same imported result tables and loaded dataset.
 
-```sh
-git diff
-npm run dev
-# After reviewing:
-git add README.md UPDATE_REVIEW.md .gitignore src public/data scripts
-git commit -m "Update explorer from September 11 ML_FINAL sources"
-```
+Fractionation charts and filters now use the reviewed regime field, retaining
+all ten intra-session splits separately even when num_fractions is 1. The single
+fraction group includes all 286 source arms; multi-day fractions include 30 arms.
 
-The original project and deployed website remain unchanged until you choose
-to publish. The backup tag can optionally be pushed before deployment.
-
-## Reverse the update
-
-Before committing, use the original project; it is untouched. To inspect or
-build the baseline here without deleting the draft:
+## Reproduce and verify
 
 ```sh
-git worktree add ../flash-explorer-baseline backup/pre-ml-final-2026-09-15
+python scripts/import_ml_final.py /Users/lucywhitmore/Downloads/ML_FINAL/FINAL_FINAL
+npm test
+npm run build
+git diff --check
 ```
 
-After committing, undo the update with a new, history-preserving commit:
+Regression checks cover cohort counts, blank CSV records, publication-title
+whitespace, equality of displayed/downloadable analysis tables, and paired
+toxicity ranges and direction. All five tests and the production build passed.
+The build retains the existing bundle-size advisory.
+Browser review confirmed **466 arms · 80 papers**, 80 publications on
+Overview, and 331 rows in the cleaned-ML download label.
 
-```sh
-git revert <update-commit-hash>
-```
+## Publish and rollback
 
-If the update was deployed, the revert must also be pushed and deployed to
-restore the live site. Avoid `git reset --hard`; it can discard unrelated work.
+The GitHub Actions workflow `.github/workflows/deploy.yml` builds on pushes to
+`main` and publishes `dist` to `gh-pages`; GitHub Pages serves that branch.
+
+To roll back after publishing, revert the update commits with new commits on
+`main` and let the workflow redeploy. Preserve unrelated work and avoid force pushes.

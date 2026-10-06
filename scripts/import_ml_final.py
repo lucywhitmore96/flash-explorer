@@ -19,8 +19,14 @@ def export_sheet(filename, sheet, target):
     path = source / filename
     record(path)
     book = openpyxl.load_workbook(path, read_only=True, data_only=True)
-    rows = list(book[sheet].values)
+    sheet_rows = iter(book[sheet].values)
+    headers = next(sheet_rows)
+    rows = [headers] + [row for row in sheet_rows
+                        if any(value is not None and str(value).strip() for value in row)]
+    book.close()
     assert len(set(rows[0])) == len(rows[0]), 'Duplicate headers'
+    title_index = headers.index('citation_title')
+    assert all(row[title_index] and str(row[title_index]).strip() for row in rows[1:]), 'Populated row without publication title'
     with (out / target).open('w', newline='') as f:
         csv.writer(f).writerows(rows)
     return [dict(zip(rows[0], row)) for row in rows[1:]]
@@ -34,10 +40,11 @@ for name in ['ML_main_results', 'primary_cohort_summary', 'DMF_summary_single_fr
     (out / path.name).write_bytes(path.read_bytes())
     tables[name] = list(csv.DictReader(path.open()))
 evaluable = [r for r in rows if r['tissue_class'] != 'tumor' and r['healthy_tissue_effect'] in ('YES', 'NO')]
-assert len(rows) == 471
+assert len(rows) == 466
+assert len({' '.join(r['citation_title'].split()) for r in rows}) == 80
 assert len(evaluable) == 326
 assert sum(r['healthy_tissue_effect'] == 'YES' for r in evaluable) == 221
-assert len(ml_rows) == 338
+assert len(ml_rows) == 331
 for r in rows:
     try:
         f, c, d = (float(r[k]) for k in ('functional_toxicity_severity_flash', 'functional_toxicity_severity_conv', 'functional_delta_score'))
@@ -46,6 +53,7 @@ for r in rows:
     assert 0 <= f <= 5 and 0 <= c <= 5
     assert c - f == d
 tables['version'] = 'ML_FINAL / FINAL_FINAL · 11 September 2026'
+tables['dataset'] = {'arms': len(rows), 'publications': 80, 'mlInputRows': len(ml_rows), 'evaluableArms': len(evaluable), 'ntsYes': 221}
 tables['sources'] = sources
 (root / 'src' / 'data').mkdir(exist_ok=True)
 (root / 'src' / 'data' / 'mlFinal.json').write_text(json.dumps(tables, indent=2) + '\n')

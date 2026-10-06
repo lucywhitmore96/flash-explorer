@@ -9,7 +9,7 @@ Interactive browser-based database explorer for the **in-vivo FLASH radiotherapy
 | Tab | Description |
 |-----|-------------|
 | **Overview** | Summary stats — total arms, publications, NTS rate, particle breakdown, publications over time |
-| **Data Explorer** | Full searchable/filterable table of all 471 experimental arms |
+| **Data Explorer** | Full searchable/filterable table of all 466 experimental arms from 80 publications |
 | **Physics Plots** | Interactive scatter plot of any two physics parameters (dose rate, DPP, dose, PRF, …), coloured by NTS outcome, with threshold reference lines |
 | **Subgroups** | FLASH NTS rate broken down by particle, tissue group, species, fractionation, and oxygen condition |
 | **Query Builder** | Build a custom subgroup query by combining any filters; shows NTS rate + 95% Wilson CI + matching paper list |
@@ -49,7 +49,9 @@ Or enable the included GitHub Actions workflow (`.github/workflows/deploy.yml`) 
 
 ## Updating the dataset
 
-Replace `public/data/ml-final-2026-09-11/literature.csv` with the new version and update the filename in `src/hooks/useFlashData.js`.
+Run `python scripts/import_ml_final.py /path/to/ML_FINAL/FINAL_FINAL` to export the reviewed September 11 sources, then run `npm test` and `npm run build`. The import excludes empty formatted workbook rows and verifies 466 literature arms, 80 normalized publication titles, 326 evaluable non-tumour arms (221 YES), and 331 cleaned ML input rows. Source workbooks remain unchanged; source hashes are recorded in `src/data/mlFinal.json`.
+
+The September 30 `NEW_VERSION` workbooks contain an additional study under review (81 titles) and are not the dataset used by this release.
 
 ## Tech stack
 

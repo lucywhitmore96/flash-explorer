@@ -26,6 +26,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify reviewed dataset
+        run: npm test
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

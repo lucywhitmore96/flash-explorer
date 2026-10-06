@@ -13,7 +13,7 @@ export function useFlashData() {
     Papa.parse(CSV_URL, {
       download: true,
       header: true,
-      skipEmptyLines: true,
+      skipEmptyLines: 'greedy',
       complete: (result) => {
         const normalised = result.data.map(normaliseRow)
         setRows(normalised)

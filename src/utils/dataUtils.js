@@ -1,5 +1,7 @@
 export function normaliseRow(row) {
   const r = { ...row }
+  // Embedded line endings and padding must not create extra publications.
+  r.citation_title = String(r.citation_title || '').replace(/\s+/g, ' ').trim()
 
   r.year = r.year ? parseInt(r.year) : null
   r.total_dose_Gy = parseFloat(r.total_dose_Gy) || null
@@ -17,7 +19,10 @@ export function normaliseRow(row) {
   r.nts = hte === 'YES' ? true : hte === 'NO' ? false : null
 
   const isFrac = String(r.is_fractionated || '').toLowerCase()
-  r.fractionated = isFrac === 'yes' || isFrac === '1' || isFrac === '1.0' || isFrac === 'yes_intrafraction_split'
+  const regime = String(r.fractionation_regime || '').toLowerCase()
+  r.fractionated = regime.includes('single') ? false
+    : regime.includes('multi') || regime.includes('intra') ? true
+    : ['yes', '1', '1.0', 'yes_intrafraction_split', 'intra_session_split'].includes(isFrac)
 
   const pRaw = (r.particle_group || r.particle || 'unknown').toLowerCase().trim()
   if (pRaw === 'heavy_ion' || pRaw === 'other') r.particle = 'heavy ion'
@@ -33,6 +38,32 @@ export function normaliseRow(row) {
 
 export function isTumourArm(r) {
   return (r.tissue_class || '').trim().toLowerCase() === 'tumor'
+}
+
+export function fractionationGroups(rows) {
+  const counts = {}
+  const multiColors = { 2: '#fbbf24', 3: '#f59e0b', 4: '#fb923c', 5: '#f97316', 8: '#ef4444', 10: '#dc2626' }
+  for (const r of rows) {
+    if (isTumourArm(r) || r.nts === null) continue
+    const regime = String(r.fractionation_regime || '').toLowerCase()
+    let name, category, sortOrder, color
+    if (regime.includes('intra')) {
+      name = 'Intra-session splits'; category = 'split'; sortOrder = 1; color = '#6366f1'
+    } else if (regime.includes('multi')) {
+      name = r.num_fractions ? `${r.num_fractions} fx` : 'Multi-day (count unknown)'
+      category = 'multi'; sortOrder = 100 + (r.num_fractions || 99); color = multiColors[r.num_fractions] || '#f59e0b'
+    } else if (regime.includes('single')) {
+      name = '1 fx'; category = 'single'; sortOrder = 0; color = '#14b8a6'
+    } else {
+      name = 'Unknown regime'; category = 'unknown'; sortOrder = 999; color = '#94a3b8'
+    }
+    if (!counts[name]) counts[name] = { yes: 0, total: 0, category, sortOrder, color }
+    counts[name].total++
+    if (r.nts) counts[name].yes++
+  }
+  return Object.entries(counts)
+    .map(([name, v]) => ({ name, n: v.total, yes: v.yes, pct: parseFloat(pct(v.yes, v.total)), category: v.category, sortOrder: v.sortOrder, color: v.color }))
+    .sort((a, b) => a.sortOrder - b.sortOrder)
 }
 
 export function summarise(rows) {

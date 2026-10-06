@@ -12,7 +12,7 @@
       "specificity": "0.6216216216216216",
       "roc_auc": "0.7305862200228399",
       "average_precision": "0.8382383228419994",
-      "brier": "0.20152859266218728",
+      "brier": "0.20152859266218726",
       "BA_low": "",
       "BA_high": "",
       "AUC_low": "",
@@ -32,7 +32,7 @@
       "specificity": "0.5",
       "roc_auc": "0.5334031214312905",
       "average_precision": "0.70572058176601",
-      "brier": "0.26620347532713745",
+      "brier": "0.2662034753271374",
       "BA_low": "0.4770686871664846",
       "BA_high": "0.6622795037397397",
       "AUC_low": "0.42234548161719065",
@@ -52,7 +52,7 @@
       "specificity": "0.6621621621621622",
       "roc_auc": "0.8104301484583175",
       "average_precision": "0.8886047315630519",
-      "brier": "0.16619358078575863",
+      "brier": "0.16619358078575866",
       "BA_low": "",
       "BA_high": "",
       "AUC_low": "",
@@ -78,7 +78,7 @@
       "AUC_low": "0.4816069364737765",
       "AUC_high": "0.7950167989390863",
       "Brier_low": "0.19738435937862658",
-      "Brier_high": "0.2703029948989122"
+      "Brier_high": "0.27030299489891224"
     },
     {
       "question": "electron_predictability",
@@ -312,13 +312,13 @@
       "specificity": "0.18181818181818182",
       "roc_auc": "0.44239811912225707",
       "average_precision": "0.6864334949794446",
-      "brier": "0.24501844739782971",
+      "brier": "0.24501844739782977",
       "BA_low": "0.395703125",
       "BA_high": "0.6318400349650348",
       "AUC_low": "0.2668098152674866",
       "AUC_high": "0.7046177536231885",
-      "Brier_low": "0.17747647556930665",
-      "Brier_high": "0.3371315246700847"
+      "Brier_low": "0.17747647556930662",
+      "Brier_high": "0.33713152467008467"
     }
   ],
   "primary_cohort_summary": [
@@ -737,10 +737,17 @@
     }
   ],
   "version": "ML_FINAL / FINAL_FINAL \u00b7 11 September 2026",
+  "dataset": {
+    "arms": 466,
+    "publications": 80,
+    "mlInputRows": 331,
+    "evaluableArms": 326,
+    "ntsYes": 221
+  },
   "sources": {
     "FLASH_toxicity_0to5_FINAL_ADJUDICATED_HUNTER_RESOLVED_2026-09-11.xlsx": "16b716e27ec79a265f428a715a5eee12310de0c424e404a67f0b7f977dedfb9c",
     "lit_review_structured_v86_ML_cleaned_HUNTER_RESOLVED_2026-09-11.xlsx": "1b2c13635e238aa1d45e5afeda6bf365d7a1d4dfb1879949e05dbb92ec725471",
-    "ML_main_results.csv": "6000cf86effc26005d7fcf3c9aa1d485742d249e8b8c76f9cc4b9833a48afcf6",
+    "ML_main_results.csv": "5e89b16e65f3bf7f1d66fd9c6edc5493eeaf0682026e106004cb8c478cc720b9",
     "primary_cohort_summary.csv": "32ae2409aeea99491ebeff0e9ecef7ca82900b403461e377c43d06a17d697a23",
     "DMF_summary_single_fraction.csv": "f55d4d71be3ab6732478751613357b5d8e8d577b9af54ee9dc81e8f5f13b1e91",
     "fractionation_regime_summary.csv": "d0996ca696639006479fca8c0b153d71eb023e8adb06aca38fe6014ff1c68fb5",

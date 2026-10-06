@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Cell, LabelList,
 } from 'recharts'
-import { pct, groupTissue, isTumourArm } from '../utils/dataUtils'
+import { pct, groupTissue, isTumourArm, fractionationGroups } from '../utils/dataUtils'
 
 function makeBarData(rows, keyFn, minN = 3) {
   const counts = {}
@@ -59,35 +59,7 @@ export default function SubgroupAnalysis({ rows }) {
   const byParticle = useMemo(() => makeBarData(rows, (r) => r.particle), [rows])
   const byTissueGroup = useMemo(() => makeBarData(rows, (r) => groupTissue(r.tissue_class)), [rows])
   const bySpecies = useMemo(() => makeBarData(rows, (r) => r.species), [rows])
-  const byFracN = useMemo(() => {
-    const evaluable = rows.filter((r) => !isTumourArm(r) && r.nts !== null)
-    const counts = {}
-    for (const r of evaluable) {
-      const nFx = r.num_fractions
-      if (!nFx) continue
-      const regime = (r.fractionation_regime || '').toLowerCase()
-      const isIntra = regime.includes('intra')
-      const isMulti = regime.includes('multi')
-      let category, key, sortOrder, color
-      if (!isIntra && !isMulti) {
-        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
-      } else if (isIntra && nFx <= 1) {
-        category = 'single'; key = '1 fx'; sortOrder = 0; color = '#14b8a6'
-      } else if (isIntra) {
-        category = 'split'; key = '2–6 splits (intra-session)'; sortOrder = 1; color = '#6366f1'
-      } else {
-        const multiColors = { 2: '#fbbf24', 3: '#f59e0b', 4: '#fb923c', 5: '#f97316', 8: '#ef4444', 10: '#dc2626' }
-        category = 'multi'; key = `${nFx} fx`; sortOrder = 100 + nFx
-        color = multiColors[nFx] || '#f59e0b'
-      }
-      if (!counts[key]) counts[key] = { yes: 0, total: 0, category, sortOrder, color }
-      counts[key].total++
-      if (r.nts) counts[key].yes++
-    }
-    return Object.entries(counts)
-      .map(([name, v]) => ({ name, n: v.total, pct: parseFloat(pct(v.yes, v.total)), category: v.category, sortOrder: v.sortOrder, color: v.color }))
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-  }, [rows])
+  const byFracN = useMemo(() => fractionationGroups(rows), [rows])
 
   const byFracRegime = useMemo(() => {
     const evaluable = rows.filter((r) => !isTumourArm(r) && r.nts !== null)

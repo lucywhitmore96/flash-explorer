@@ -44,14 +44,6 @@ export default function App() {
                   {rows.length} arms · {new Set(rows.map((r) => r.citation_title).filter(Boolean)).size} papers
                 </p>
               )}
-              <a
-                href="https://github.com/lucywhitmore96/flash-explorer"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-flash-600 hover:text-flash-700 font-medium"
-              >
-                View on GitHub →
-              </a>
             </div>
           </div>
 

@@ -16,6 +16,8 @@ Interactive browser-based database explorer for the **in-vivo FLASH radiotherapy
 
 ## Dataset
 
+The visitor interface has no GitHub repository link or dataset/source-table download links. All interactive views remain available. This is a presentation choice, not access control: the public repository and static data assets remain accessible independently of the interface.
+
 The database (`public/data/ml-final-2026-09-11/literature.csv`) was compiled as part of:
 
 > Whitmore et al. (2026) — *Machine learning analysis of in-vivo FLASH radiotherapy: predictors of normal-tissue sparing* (manuscript in preparation)

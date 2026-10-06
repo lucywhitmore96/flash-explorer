@@ -54,7 +54,16 @@ whitespace, equality of displayed/downloadable analysis tables, and paired
 toxicity ranges and direction. All five tests and the production build passed.
 The build retains the existing bundle-size advisory.
 Browser review confirmed **466 arms · 80 papers**, 80 publications on
-Overview, and 331 rows in the cleaned-ML download label.
+Overview, and 331 populated rows in the cleaned-ML export.
+
+## Presentation sharing
+
+At the user's request, the header repository link, all source-table download
+links, and the cleaned-ML download card have been removed. Interactive views and
+the existing page URL remain unchanged, so the presentation QR code still works.
+This removes visible download options; it does not make the public repository or
+browser-loaded data private. The user clarified that screenshots are acceptable
+and requested removal of links rather than a summary-only replacement.
 
 ## Publish and rollback
 

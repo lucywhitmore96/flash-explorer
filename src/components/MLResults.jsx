@@ -5,12 +5,13 @@ const format = value => value === '' || value == null ? '—' :
   Number.isFinite(Number(value)) ? (Number.isInteger(Number(value)) ? value : Number(value).toFixed(3)) : String(value).replaceAll('_', ' ')
 
 function ResultsTable({ title, name, columns, note }) {
+  const rows = results[name].filter(row => row.analysis !== 'DPP_sensitivity_ge_0p1')
   return <section className="card">
     <h3 className="text-sm font-semibold text-slate-700 mb-2">{title}</h3>
     {note && <p className="text-xs text-slate-500 mb-4">{note}</p>}
     <div className="overflow-x-auto"><table className="w-full text-xs text-left">
       <thead><tr>{columns.map(([key, label]) => <th className="p-2 border-b text-slate-600" key={key}>{label}</th>)}</tr></thead>
-      <tbody>{results[name].map((row, i) => <tr key={i} className="even:bg-slate-50">{columns.map(([key]) => <td className="p-2 border-b border-slate-100" key={key}>{format(row[key])}</td>)}</tr>)}</tbody>
+      <tbody>{rows.map((row, i) => <tr key={i} className="even:bg-slate-50">{columns.map(([key]) => <td className="p-2 border-b border-slate-100" key={key}>{format(row[key])}</td>)}</tr>)}</tbody>
     </table></div>
   </section>
 }

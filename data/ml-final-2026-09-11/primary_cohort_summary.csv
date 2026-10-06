@@ -1,0 +1,5 @@
+section,metric,value,n,details
+primary_cohort,Evaluable NTS arms,326.0,326,221 YES; 105 NO; 66 publications
+primary_cohort,Overall NTS rate,0.6779141104294478,326,
+primary_cohort,Electron NTS rate,0.6574074074074074,216,
+primary_cohort,Proton NTS rate,0.725,80,
